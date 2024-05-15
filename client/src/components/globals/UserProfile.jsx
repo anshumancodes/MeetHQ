@@ -1,11 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CircleUser } from 'lucide-react'
-import {LogOutIcon} from 'lucide-react'
+import { LogOutIcon } from 'lucide-react'
 
 const UserProfile = () => {
-    const [userName,setUserName]=useState('');
-    const[useremail,setuseremail]=useState('');
-    const [isOpen,setisOpen]=useState(false);
+    const [userName, setUserName] = useState('');
+    const [useremail, setuseremail] = useState('');
+    const [isOpen, setisOpen] = useState(false);
+
+    useEffect(() => {
+        setUserName("anshcdx")
+        setuseremail("anshumanprof01@gmail.com")
+    }, [])
 
     const handleOpenModal = () => {
         setisOpen(true);
@@ -22,28 +27,29 @@ const UserProfile = () => {
     return (
         <div>
             <div className='flex flex-col gap-4'>
-                <div className='flex gap-3' onClick={handleOpenModal}>
-                    <CircleUser/>
-                    <div>{userName}</div>
-                </div>
+               
+               {
+                isOpen ? null :( <div className='flex gap-3' >
+                <CircleUser onClick={handleOpenModal} />
+                <div>{userName}</div>
+            </div>)
+               }
                 {
-                    isOpen? <dialog id="my_modal_3" className="modal">
-                        <div className="modal-box">
-                            <form method="dialog">
-                                {/* if there is a button in form, it will close the modal */}
-                                <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={handleCloseModal}>✕</button>
-                            </form>
-                            <div className='flex gap-3' >
-                                <CircleUser/>
-                                <div>{userName}</div>
-                                <div>{useremail}</div>
+                    isOpen && (
+                        <div className="modal">
+                            <div className="modal-content bg-white">
+                                <span className="close" onClick={handleCloseModal}>X</span>
+                                <div className='flex gap-1 flex-col ' >
+                                    <CircleUser />
+                                    <div>{userName}</div>
+                                    <div>{useremail}</div>
+                                </div>
+                                <div >
+                                    <button onClick={handleLogout} className='flex gap-1'> <LogOutIcon />logout</button>
+                                </div>
                             </div>
-                            <div>
-                                <button onClick={handleLogout}> <LogOutIcon/>logout</button>
-                            </div>
-                            <p className="py-4">Press ESC key or click on ✕ button to close</p>
                         </div>
-                    </dialog> : null
+                    )
                 }
             </div>
         </div>
