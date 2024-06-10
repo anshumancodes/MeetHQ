@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-export function Signup() {
+function Signup() {
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: ''
   });
-
+ const navigate=useNavigate();
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData(prevState => ({
@@ -18,9 +20,10 @@ export function Signup() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    
 
     try {
-      const response = await fetch('http://localhost:8001/api/signup', {
+      const response = await fetch('/user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -30,7 +33,11 @@ export function Signup() {
 
       if (response.ok) {
         const data = await response.json();
-        console.log('Success:', data);
+        alert(data.message);
+
+        navigate("/signin")
+
+
       } else {
         const error = await response.text();
         console.error('Error:', error);
@@ -61,7 +68,7 @@ export function Signup() {
             </a>
           </p>
 
-          <form onSubmit={handleSubmit} className='mt-8 flex flex-col gap-4'>
+          <form onSubmit={handleSubmit} className='mt-8 flex flex-col gap-4' action='/user'>
             <div className='space-y-5' >
               <label htmlFor="name" className='text-gray-200'>Full Name</label>
               <input
@@ -98,10 +105,13 @@ export function Signup() {
                 className='inline-flex w-full items-center justify-center rounded-md px-3.5 py-2.5 bg-transparent border border-gray-100 text-gray-500'
               />
             </div>
-            <button type="submit" className="inline-flex w-full items-center justify-center rounded-md bg-gray-100 px-3.5 py-2.5 font-semibold leading-7 text-gray-950 hover:bg-black/80">Create Account <ArrowRight className="ml-2" size={16} /></button>
+            <button type="submit" className="inline-flex w-full items-center justify-center rounded-md bg-gray-100 px-3.5 py-2.5 font-semibold leading-7 text-gray-950 hover:bg-gray-500">Create Account <ArrowRight className="ml-2" size={16} /></button>
           </form>
         </div>
       </div>
     </section>
   );
 }
+
+
+export default Signup
